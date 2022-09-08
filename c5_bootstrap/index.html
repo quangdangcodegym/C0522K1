@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet"  href="css/bootstrap.css">
+    <link rel="stylesheet"  href="css/all.css">
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.js"></script>
+    
+    <style>
+        .myhead > .col-7 > button{
+            float: right;
+            margin-right: 10px;
+        }
+        .myhead{
+          padding: 20px;
+        }
+        .myhead > .col-5 > h2{
+          color: white;
+        }
+        .table > thead > tr{
+          background-color: #4CAF50 ;
+          color: white;
+        }
+        .row{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        .table > tbody > tr > td {
+          vertical-align: middle;
+          border: 0 solid #ddd;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+      <div class="myhead row bg-primary">
+        <div class="col-5">
+          <h2>List of customers</h2>
+        </div>
+        <div class="col-7" >
+            <button class="btn btn-outline-light" ><i class="fa fa-plus-square"></i> Add New Customer</button>
+            <button class="btn btn-outline-light"><i class="fa fa-history"></i> Tranfer money information</button>
+        </div>
+      </div>
+      <div>
+        <table class="table table-hover">
+          <thead>
+              <tr>
+                  <th>#</th>
+                  <th>FullName</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Balance</th>
+                  <th colspan="5">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              
+                  <tr>
+<!--                        <td th:text="${customer.deposits.size()}" class="text-center"></td>-->
+                      <td>1085</td>
+                      <td>Athena Perkins</td>
+                      <td>pakekaruzo@mailinator.com</td>
+                      <td class="text-center">+1 (429) 714-5055</td>
+                      <td>Illum voluptas</td>
+                      <td class="text-end num-space">10 081 200</td>
+                      <td class="text-center">
+                          <a class="btn btn-outline-secondary" title="" data-toggle="tooltip" href="/customers/edit/1085" data-bs-original-title="Edit">
+                              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a class="btn btn-outline-success" title="" data-toggle="tooltip" href="/customers/deposit/1085" data-bs-original-title="Deposit">
+                              <i class="fa fa-plus" aria-hidden="true"></i>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a class="btn btn-outline-warning" title="" data-toggle="tooltip" href="/customers/withdraw/1085" data-bs-original-title="Withdraw">
+                              <i class="fa fa-minus" aria-hidden="true"></i>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a class="btn btn-outline-primary" title="" data-toggle="tooltip" href="/customers/transfer/1085" data-bs-original-title="Transfer">
+                              <i class="fa fa-exchange" aria-hidden="true"></i>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a class="btn btn-outline-danger" title="" data-toggle="tooltip" href="/customers/suspended/1085" data-bs-original-title="Suspended">
+                              <i class="fa fa-ban" aria-hidden="true"></i>
+                          </a>
+                      </td>
+                  </tr>
+              
+                  
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  
+</body>
+</html>

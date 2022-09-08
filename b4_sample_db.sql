@@ -104,3 +104,7 @@ INSERT INTO `c5_qlybanhang`.`cthd` (`SoHD`, `MaSP`, `SoLuong`) VALUES ('1013', '
 INSERT INTO `c5_qlybanhang`.`cthd` (`SoHD`, `MaSP`, `SoLuong`) VALUES ('1014', 'BC02', '80');
 INSERT INTO `c5_qlybanhang`.`cthd` (`SoHD`, `MaSP`, `SoLuong`) VALUES ('1014', 'BC02', '100');
 INSERT INTO `c5_qlybanhang`.`cthd` (`SoHD`, `MaSP`, `SoLuong`) VALUES ('1014', 'BC04', '60');
+
+
+
+----------
