@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"  href="css/bootstrap.css">
+    <link rel="stylesheet"  href="css/all.css">
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <style>
+        .myhead > .col-7 > button{
+            float: right;
+            margin-right: 10px;
+        }
+        .myhead{
+          padding: 20px;
+        }
+        .myhead > .col-5 > h2{
+          color: white;
+        }
+        .table > thead > tr{
+          background-color: #4CAF50 ;
+          color: white;
+        }
+        .row{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        .table > tbody > tr > td {
+          vertical-align: middle;
+          border: 0 solid #ddd;
+        }
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="myhead row bg-primary">
+          <div class="col-5">
+            <h2>List of customers</h2>
+          </div>
+          <div class="col-7" >
+              <button class="btn btn-outline-light" ><i class="fa fa-plus-square"></i> Add New Customer</button>
+              <button class="btn btn-outline-light"><i class="fa fa-history"></i> Tranfer money information</button>
+          </div>
+        </div>
+        <div>
+            <form id="frmCreateCustomer" method="post" >
+                <fieldset class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Full name</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" value="">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" value="">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" value="">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" id="btnCreateCustomer" class="btn btn-outline-primary">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                             Create customer
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+      </div>
+      <!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    <script>
+        $( "#frmCreateCustomer" ).validate({
+            onsubmit: function(){
+                alert("Submitted!");
+            },
+            rules: {
+                fullName: {
+                    required: true,
+                    step: 10
+                }
+            },
+            messages:{
+                a: "Please specify your name"
+            }
+        });
+    </script>
+</body>
+</html>
