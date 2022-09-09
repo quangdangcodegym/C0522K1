@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/dangki"})
 public class LoginServlet extends HttpServlet {
@@ -21,9 +24,15 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
+        List<String> listUsers = new ArrayList<>();
+        listUsers.add("NHAT");
+        listUsers.add("KIEN");
 
         if(username.equals("luong")&&password.equals("123123")){
+            listUsers.add(username);
+
             req.setAttribute("user", username);
+            req.setAttribute("listUsers", listUsers);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/index.jsp");
             requestDispatcher.forward(req, resp);
         }else {
