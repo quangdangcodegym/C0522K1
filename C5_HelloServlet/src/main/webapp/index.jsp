@@ -24,7 +24,14 @@
 <h1>DUNG THE JSTL FOR EACH</h1>
 
 <c:forEach items="${requestScope.listUsers}" var="c">
-    <li>${c}</li>
+    <c:choose>
+        <c:when test='${c=="luong"}'>
+            <li>${c} be de</li>
+        </c:when>
+        <c:otherwise>
+            <li>${c}</li>
+        </c:otherwise>
+    </c:choose>
 </c:forEach>
 </body>
 </html>
