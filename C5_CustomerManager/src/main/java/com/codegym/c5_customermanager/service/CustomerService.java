@@ -12,7 +12,7 @@ public interface CustomerService {
 
     Customer findById(int id) throws SQLException;
 
-    void update(int id, Customer customer);
+    void update(int id, Customer customer) throws SQLException;
 
     void remove(int id);
 }

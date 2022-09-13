@@ -98,8 +98,22 @@ public class CustomerServiceImplMysql implements CustomerService{
     }
 
     @Override
-    public void update(int id, Customer customer) {
+    public void update(int id, Customer customer) throws SQLException {
+        String SP_UPDATE_CUSTOMER = "call c5_customermanager.sp_updatecustomer(?, ?, ?, ?, ?)";
+        Connection connection = getConnection();
+        CallableStatement callableStatement = connection.prepareCall(SP_UPDATE_CUSTOMER);
+        callableStatement.setInt(1, id);
+        callableStatement.setString(2, customer.getEmail());
+        callableStatement.setString(3, customer.getName());
+        callableStatement.setString(4, customer.getAddress());
 
+        callableStatement.registerOutParameter(5, Types.VARCHAR);
+
+        System.out.println(this.getClass() + " update: " + callableStatement);
+        callableStatement.execute();
+
+        String message = callableStatement.getString(5);
+        System.out.println("update......: " + message);
     }
 
     @Override
