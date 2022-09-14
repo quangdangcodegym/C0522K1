@@ -15,4 +15,6 @@ public interface CustomerService {
     void update(int id, Customer customer) throws SQLException;
 
     void remove(int id);
+
+    public void saveForRollBack(Customer customer);
 }

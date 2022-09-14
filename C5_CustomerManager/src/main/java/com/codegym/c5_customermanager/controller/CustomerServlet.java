@@ -90,7 +90,7 @@ public class CustomerServlet extends HttpServlet implements Serializable {
         List<Customer> customers = this.customerService.findAll();
         request.setAttribute("customers", customers);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/list.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/list.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -100,7 +100,7 @@ public class CustomerServlet extends HttpServlet implements Serializable {
         }
     }
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/create.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -117,7 +117,7 @@ public class CustomerServlet extends HttpServlet implements Serializable {
 
         Customer customer = new Customer(id, name, email, address);
         this.customerService.save(customer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/create.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
         request.setAttribute("message", "New customer was created");
         try {
             dispatcher.forward(request, response);

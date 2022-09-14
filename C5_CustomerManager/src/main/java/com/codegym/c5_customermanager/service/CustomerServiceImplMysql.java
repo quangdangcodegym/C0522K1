@@ -65,7 +65,25 @@ public class CustomerServiceImplMysql implements CustomerService{
     }
 
     @Override
-    public void save(Customer customer) {
+    public void save(Customer customer) throws SQLException {
+        String INSERT_CUSTOMER = "insert into customer(email, name, address) values (?, ?, ?)";
+        try(
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CUSTOMER);
+        ){
+            preparedStatement.setString(1, customer.getEmail());
+            preparedStatement.setString(2, customer.getName());
+            preparedStatement.setString(3, customer.getAddress());
+
+            System.out.println(this.getClass() + " save : " + preparedStatement);
+            preparedStatement.execute();
+
+        }catch(SQLException sql){
+        }
+    }
+
+    @Override
+    public void saveForRollBack(Customer customer) {
         String INSERT_CUSTOMER = "insert into customer(email, name, address) values (?, ?, ?)";
         Savepoint c5 = null;
         try(
@@ -83,6 +101,7 @@ public class CustomerServiceImplMysql implements CustomerService{
             c5 = connection.setSavepoint();
 
             preparedStatement.setString(1, customer.getEmail() + "x1"); // Ngai x1
+            preparedStatement.execute();
             connection.rollback(c5);
             preparedStatement.setString(1, customer.getEmail() + "x2"); // Ngai x2
             preparedStatement.execute();    // Ngai x2
