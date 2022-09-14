@@ -39,40 +39,64 @@ public class CustomerServiceImplMysql implements CustomerService{
 
 
     @Override
-    public List<Customer> findAll() throws SQLException {
+    public List<Customer> findAll()  {
 
         List<Customer> list = new ArrayList<>();
-
         Connection connection = getConnection();
-        Statement statement = connection.createStatement();
+        try{
+            Statement statement = connection.createStatement();
 
-        System.out.println(this.getClass() + " findAll : " + statement);
-        ResultSet rs = statement.executeQuery(SELECT_ALL_CUSTOMER);
-        while (rs.next()){
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            String email = rs.getString("email");
-            String address = rs.getString("address");
+            System.out.println(this.getClass() + " findAll : " + statement);
+            ResultSet rs = statement.executeQuery(SELECT_ALL_CUSTOMER);
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
 
-            Customer cus = new Customer(id, name, email, address);
-            list.add(cus);
+                Customer cus = new Customer(id, name, email, address);
+                list.add(cus);
+            }
+            connection.close();
+        }catch (SQLException sqlException){
+
         }
-
         return list;
     }
 
     @Override
-    public void save(Customer customer) throws SQLException {
+    public void save(Customer customer) {
         String INSERT_CUSTOMER = "insert into customer(email, name, address) values (?, ?, ?)";
-        Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CUSTOMER);
-        preparedStatement.setString(1, customer.getEmail());
-        preparedStatement.setString(2, customer.getName());
-        preparedStatement.setString(3, customer.getAddress());
+        Savepoint c5 = null;
+        try(
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CUSTOMER);
+                ){
+            connection.setAutoCommit(false);
+            preparedStatement.setString(1, customer.getEmail());
+            preparedStatement.setString(2, customer.getName());
+            preparedStatement.setString(3, customer.getAddress());
 
-        System.out.println(this.getClass() + " save : " + preparedStatement);
+            System.out.println(this.getClass() + " save : " + preparedStatement);
 
-        preparedStatement.execute();
+            preparedStatement.execute();        //Ngai
+            c5 = connection.setSavepoint();
+
+            preparedStatement.setString(1, customer.getEmail() + "x1"); // Ngai x1
+            connection.rollback(c5);
+            preparedStatement.setString(1, customer.getEmail() + "x2"); // Ngai x2
+            preparedStatement.execute();    // Ngai x2
+            preparedStatement.execute();    // Ngai x2
+            connection.commit();
+        }catch(SQLException sql){
+            try {
+                getConnection().rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     @Override

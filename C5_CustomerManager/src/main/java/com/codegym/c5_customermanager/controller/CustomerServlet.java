@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
-public class CustomerServlet extends HttpServlet {
+public class CustomerServlet extends HttpServlet implements Serializable {
+
     CustomerService customerService;
 
     @Override
