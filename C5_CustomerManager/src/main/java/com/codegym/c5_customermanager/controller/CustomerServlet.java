@@ -1,10 +1,13 @@
 package com.codegym.c5_customermanager.controller;
 
 
+import com.codegym.c5_customermanager.model.Country;
 import com.codegym.c5_customermanager.model.Customer;
+import com.codegym.c5_customermanager.service.CountryService;
+import com.codegym.c5_customermanager.service.CountryServiceImpl;
 import com.codegym.c5_customermanager.service.CustomerService;
-import com.codegym.c5_customermanager.service.CustomerServiceImpl;
 import com.codegym.c5_customermanager.service.CustomerServiceImplMysql;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,19 +15,33 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet implements Serializable {
 
     CustomerService customerService;
+    CountryService countryService;
+    List<Country> countries;
 
     @Override
     public void init() throws ServletException {
         customerService = new CustomerServiceImplMysql();
+        countryService = new CountryServiceImpl();
+        try {
+            countries = countryService.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -101,6 +118,7 @@ public class CustomerServlet extends HttpServlet implements Serializable {
     }
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
+        request.setAttribute("countries", countries);
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -109,22 +127,56 @@ public class CustomerServlet extends HttpServlet implements Serializable {
             e.printStackTrace();
         }
     }
-    private void createCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String address = request.getParameter("address");
-        int id = (int)(Math.random() * 10000);
-
-        Customer customer = new Customer(id, name, email, address);
-        this.customerService.save(customer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
-        request.setAttribute("message", "New customer was created");
+    private void createCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<String> errors = new ArrayList<>();
+        Customer customer = new Customer();
+        RequestDispatcher dispatcher = null;
         try {
+            String name = request.getParameter("name");
+            customer.setName(name);
+            String email = request.getParameter("email");
+            customer.setEmail(email);
+            String address = request.getParameter("address");
+            customer.setAddress(address);
+            int idCountry = Integer.parseInt(request.getParameter("idCountry"));
+
+            customer.setIdCountry(idCountry);
+
+            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+            Validator validator = validatorFactory.getValidator();
+            Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
+            dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
+
+            if (!constraintViolations.isEmpty()) {
+                for (ConstraintViolation<Customer> item : constraintViolations) {
+                    errors.add(item.getMessage());
+                }
+                request.setAttribute("errors", errors);
+                request.setAttribute("customer", customer);
+                request.setAttribute("countries", countries);
+            } else {
+                // Vao database kiem tra idCountry co hop le hay khong
+                if (countryService.findById(idCountry) != null) {
+                    this.customerService.save(customer);
+                    request.setAttribute("message", "New customer was created");
+                } else {
+                    errors.add("Country khong hop le");
+                    request.setAttribute("errors", errors);
+                    request.setAttribute("customer", customer);
+                    request.setAttribute("countries", countries);
+                }
+            }
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        }catch (NumberFormatException numberFormatException){
+            dispatcher = request.getRequestDispatcher("/WEB-INF/customer1/create.jsp");
+            errors.add("Loi format...");
+            request.setAttribute("errors", errors);
+            request.setAttribute("countries", countries);
+            request.setAttribute("customer", customer);
+            dispatcher.forward(request, response);
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException {

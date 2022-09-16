@@ -53,8 +53,9 @@ public class CustomerServiceImplMysql implements CustomerService{
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String address = rs.getString("address");
+                int idCountry = rs.getInt("id_country");
 
-                Customer cus = new Customer(id, name, email, address);
+                Customer cus = new Customer(id, name, email, address, idCountry);
                 list.add(cus);
             }
             connection.close();
@@ -66,7 +67,7 @@ public class CustomerServiceImplMysql implements CustomerService{
 
     @Override
     public void save(Customer customer) throws SQLException {
-        String INSERT_CUSTOMER = "insert into customer(email, name, address) values (?, ?, ?)";
+        String INSERT_CUSTOMER = "insert into customer(email, name, address, id_country) values (?, ?, ?,?)";
         try(
                 Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CUSTOMER);
@@ -74,6 +75,7 @@ public class CustomerServiceImplMysql implements CustomerService{
             preparedStatement.setString(1, customer.getEmail());
             preparedStatement.setString(2, customer.getName());
             preparedStatement.setString(3, customer.getAddress());
+            preparedStatement.setInt(4, customer.getIdCountry());
 
             System.out.println(this.getClass() + " save : " + preparedStatement);
             preparedStatement.execute();
@@ -133,8 +135,9 @@ public class CustomerServiceImplMysql implements CustomerService{
             String name = rs.getString("name");
             String email = rs.getString("email");
             String address = rs.getString("address");
+            int idCountry = rs.getInt("id_country");
 
-            Customer cus = new Customer(id1, name, email, address);
+            Customer cus = new Customer(id1, name, email, address, idCountry);
             return cus;
         }
         return null;

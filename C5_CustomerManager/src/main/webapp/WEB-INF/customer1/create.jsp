@@ -51,23 +51,44 @@
                             <div class="col-sm-12">
                                 <div class="card-box">
                                     <h4 class="header-title">Input Types</h4>
+                                    <c:if test="${requestScope.errors!=null}">
+                                        <div class="alert alert-icon alert-danger alert-dismissible fade show mb-0" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                            <strong>Errors!</strong> <br>
+                                            <c:forEach items="${requestScope.errors}" var="item">
+                                                <li>${item}</li>
+                                            </c:forEach>
+                                        </div>
+                                    </c:if>
                                     <form class="form-horizontal" method="post" action="/customers?action=create">
                                         <div class="form-group row">
                                             <label class="col-md-2 control-label">Name</label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="name">
+                                                <input type="text" class="form-control" name="name" value="${requestScope.customer.getName()}">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 control-label" for="idEmail">Email</label>
                                             <div class="col-md-10">
-                                                <input type="email" id="idEmail" name="email" class="form-control" placeholder="Email">
+                                                <input id="idEmail" name="email" class="form-control" placeholder="Email" value="${requestScope.customer.getEmail()}">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-2 control-label" for="idAddress">Address</label>
                                             <div class="col-md-10">
-                                                <input type="email" id="idAddress" name="address" class="form-control" placeholder="Address">
+                                                <input id="idAddress" name="address" class="form-control" placeholder="Address" value="${requestScope.customer.getAddress()}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-2 control-label" for="idCountry">Country</label>
+                                            <div class="col-md-10">
+                                                <select id="idCountry" name="idCountry">
+                                                    <c:forEach items="${requestScope.countries}" var="country">
+                                                        <option value="${country.getId()}">${country.getName()}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                         <button>Create</button>
