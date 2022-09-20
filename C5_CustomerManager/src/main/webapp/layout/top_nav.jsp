@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <header id="topnav">
     <!-- Topbar Start -->
     <div class="navbar-custom">
@@ -206,8 +209,11 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
+<%--                        <%--%>
+<%--                            String username = (String) request.getSession().getAttribute("username");--%>
+<%--                        %>--%>
                         <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome !</h6>
+                            <h6 class="text-overflow m-0">${pageContext.request.userPrincipal.name}</h6>
                         </div>
 
                         <!-- item-->
@@ -217,16 +223,18 @@
                         </a>
 
                         <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="mdi mdi-settings-outline"></i>
-                            <span>Settings</span>
-                        </a>
+                        <c:if test="${pageContext.request.isUserInRole('admin')}">
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="mdi mdi-settings-outline"></i>
+                                <span>Settings</span>
+                            </a>
 
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="mdi mdi-lock-outline"></i>
-                            <span>Lock Screen</span>
-                        </a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="mdi mdi-lock-outline"></i>
+                                <span>Lock Screen</span>
+                            </a>
+                        </c:if>
 
                         <div class="dropdown-divider"></div>
 
@@ -464,6 +472,7 @@
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
+
                                     <li><a href="extras-profile.html">Profile</a></li>
                                     <li><a href="extras-sitemap.html">Sitemap</a></li>
                                     <li><a href="extras-about.html">About Us</a></li>

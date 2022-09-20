@@ -35,6 +35,7 @@ public class CustomerServlet extends HttpServlet implements Serializable {
 
     @Override
     public void init() throws ServletException {
+
         customerService = new CustomerServiceImplMysql();
         countryService = new CountryServiceImpl();
         try {
@@ -72,33 +73,33 @@ public class CustomerServlet extends HttpServlet implements Serializable {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //request.isUserInRole("admin");
+        //request.getUserPrincipal().getName()
         String action = request.getParameter("action");
         if(action == null){
             action = "";
         }
-        switch (action){
-            case "create":
-                showCreateForm(request, response);
-                break;
-            case "edit":
-                try {
+        try{
+            switch (action){
+                case "create":
+                    showCreateForm(request, response);
+                    break;
+                case "edit":
                     showEditForm(request, response);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "delete":
-                break;
-            case "view":
-                break;
-            default:
-                try {
-                    listCustomers(request, response);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
+
+                    break;
+                case "delete":
+                    break;
+                case "view":
+                    break;
+                default:
+                        listCustomers(request, response);
+                    break;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
 
 
